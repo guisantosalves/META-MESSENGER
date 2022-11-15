@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 function Header() {
 
-    const session = true;
+    const session = false;
 
     if(session) return (
         <header className='stick top-0 z-50 bg-white flex justify-center items-start p-10 shadow-sm'>
@@ -29,7 +29,7 @@ function Header() {
                 </div>
 
                 <Link 
-                    href={'/auth/signin'}
+                    href={'/second'}
                     className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
                 >
                     Sign In
