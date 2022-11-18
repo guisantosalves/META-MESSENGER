@@ -1,10 +1,18 @@
 import * as React from 'react'
 
+// component
+import MessageList from './MessageList';
+import ChatInput from './ChatInput';
+
 function HomePage() {
     return(
-        <div className='text-4xl'>
-            <h1>Welcome to the Messenger</h1>
-        </div>
+        <main>
+            {/* message list */}
+            <MessageList />
+
+            {/* chat input */}
+            <ChatInput />
+        </main>
     )
 }
 

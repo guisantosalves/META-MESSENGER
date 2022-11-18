@@ -2,16 +2,33 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+// components
+import LogOutButton from './LogOutButtons';
+
+// every component that has any interactive action, that's gonna be a client component
+// however we need build a component for that
 function Header() {
 
-    const session = false;
+    const session = true;
 
     if(session) return (
-        <header className='stick top-0 z-50 bg-white flex justify-center items-start p-10 shadow-sm'>
+        <header className='stick top-0 z-50 bg-white flex justify-between items-start p-10 shadow-sm'>
             <div className='flex space-x-2'>
-                {/* <Image src={}/> */}
-                <h1>header if I am logged in</h1>
+                <Image 
+                    src={'https://1000logos.net/wp-content/uploads/2021/10/logo-Meta.png'}
+                    className="rounded-full mx-2 object-contain"
+                    height={10}
+                    width={50}
+                    alt={'Profile Picture'}
+                />
+                <div>
+                   <p className="text-blue-500">Logged in as:</p>
+                   <p className="font-bold text-lg">Guilherme Santos</p>
+                </div>
+                  
             </div>
+
+            <LogOutButton />
         </header>
     )
 
