@@ -3,12 +3,19 @@
 import * as React from 'react'
 import { v4 as uuid } from 'uuid'
 import { Message } from '../typings'
+import useSWR from 'swr'
+import fetcher from '../utils/fetchMessages'
 
 const ChatInput = () => {
     // always when we need to do something with state, it's basically a client component.
     const [input, setInput] = React.useState<string>("")
+    
+    // rename data
+    const {data: messages, error, mutate} = useSWR("/api/getMessages", fetcher) // using get endpoint
 
-    const addMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log(messages)
+
+    const addMessage = async (e: React.FormEvent<HTMLFormElement>) => {
         // look at the return in vscode and set it
         e.preventDefault();
 
@@ -30,7 +37,7 @@ const ChatInput = () => {
         }
 
         const uploadMessageToUpstash = async () => {
-            const response = await fetch('/api/addMessage', {
+            const data = await fetch('/api/addMessage', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -38,11 +45,17 @@ const ChatInput = () => {
                 body: JSON.stringify({
                     message
                 })
-            })
+            }).then(res => res.json()) // using post endpoint
 
-            const data = await response.json()
+            
+            return [data.message, ...messages!] // getting from useSWR
         }
 
+        await mutate(uploadMessageToUpstash, {
+            optimisticData: [message, ...messages!],
+            rollbackOnError: true,
+        }) // -> update the store when I send a message
+       
     }
 
     // flex-1 -> get all the space of a flex container father 

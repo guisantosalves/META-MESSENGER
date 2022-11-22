@@ -11,27 +11,28 @@ type ErrorData = {
     body: string
 }
 
+type DataResponse = {
+    messages: Message[]
+}
+
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<Data | ErrorData>
+    res: NextApiResponse<Data | ErrorData | DataResponse>
 ) {
 
     // forcing the endpoint beeing only the POST Method
-    if (req.method !== 'POST') {
+    if (req.method !== 'GET') {
         res.status(405).json({ body: 'method not allowed' })
         return
     }
 
-    const { message } = req.body
+    const messageResponse = await redis.hvals('messages')
+    
+    // making map and sorting data by date
+    const messages: Message[] = 
+        messageResponse
+        .map((item, index) => JSON.parse(item))
+        .sort((a, b) => b.created_at - a.created_at)
 
-    // changing created_at from user to the server
-    const newMessage = {
-        ...message,
-        created_at: Date.now()
-    }
-
-    // pushing to upstash
-    await redis.hset('messages', message.id, JSON.stringify(newMessage))
-
-    res.status(200).json({message: newMessage})
+    res.status(200).json({messages: messages})
 }
