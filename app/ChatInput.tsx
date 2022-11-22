@@ -13,8 +13,6 @@ const ChatInput = () => {
     // rename data
     const {data: messages, error, mutate} = useSWR("/api/getMessages", fetcher) // using get endpoint
 
-    console.log(messages)
-
     const addMessage = async (e: React.FormEvent<HTMLFormElement>) => {
         // look at the return in vscode and set it
         e.preventDefault();
@@ -52,7 +50,7 @@ const ChatInput = () => {
         }
 
         await mutate(uploadMessageToUpstash, {
-            optimisticData: [message, ...messages!],
+            optimisticData: [message, ...messages!], // setting in cache of swr before the val before the call
             rollbackOnError: true,
         }) // -> update the store when I send a message
        

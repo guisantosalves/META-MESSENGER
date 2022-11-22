@@ -2,7 +2,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['1000logos.net']
+    domains: ['1000logos.net', 'pbs.twimg.com']
   },
   experimental: {
     appDir: true
