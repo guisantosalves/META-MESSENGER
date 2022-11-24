@@ -2,6 +2,7 @@ import * as React from "react"
 import { Message } from "../typings";
 import Image from 'next/image'
 import { useSession } from "next-auth/react";
+import ReactTimeAgo from "react-time-ago"
 
 type Props = {
     message: Message;
@@ -12,8 +13,8 @@ type Props = {
 */
 const MessageComponent = ({ message }: Props) => {
 
-    const {data: session } = useSession()
-    
+    const { data: session } = useSession()
+
     // comparing users
     const isUser = session?.user?.email === message.email;
 
@@ -43,7 +44,7 @@ const MessageComponent = ({ message }: Props) => {
 
                     <p className={`text-[0.65rem] italic px-2 text-gray-400 
                     ${isUser && 'text-right'}`}>
-                        {new Date(message.created_at).toLocaleString()}
+                        {new Date(message.created_at).toLocaleDateString()} - {new Date(message.created_at).toLocaleTimeString()}
                     </p>
                 </div>
             </div>
