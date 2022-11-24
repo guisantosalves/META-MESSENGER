@@ -32,6 +32,8 @@ const MessageList = ({initialMessages}: Props) => {
             // comparing store === data from pusher
             if (messages?.find((item) => item.id === data.id)) return;
 
+            console.log("--> this message is from pusher not swr store: ", data.message)
+            
             if (!messages) {
                 mutate(fetcher)
             } else {
@@ -48,6 +50,7 @@ const MessageList = ({initialMessages}: Props) => {
             channel.unsubscribe();
         }
     }, [messages, mutate, clientPusher])
+
     return (
         <div className="space-y-5 px-5 pt-8 pb-32 max-w-2xl xl:max-w-4xl mx-auto">
             {(messages || initialMessages).map((item, index) => (

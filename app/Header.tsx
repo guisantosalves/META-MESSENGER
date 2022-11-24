@@ -4,18 +4,20 @@ import Link from 'next/link'
 
 // components
 import LogOutButton from './LogOutButtons';
+import { unstable_getServerSession } from 'next-auth';
 
 // every component that has any interactive action, that's gonna be a client component
 // however we need build a component for that
-function Header() {
+async function Header() {
 
-    const session = true;
+    //session is give by next-auth -> if the user is logged in
+    const session = await unstable_getServerSession()
 
     if(session) return (
         <header className='stick top-0 z-50 bg-white flex justify-between items-start p-10 shadow-sm'>
             <div className='flex space-x-2'>
                 <Image 
-                    src={'https://1000logos.net/wp-content/uploads/2021/10/logo-Meta.png'}
+                    src={session.user?.image!}
                     className="rounded-full mx-2 object-contain"
                     height={10}
                     width={50}
@@ -23,7 +25,7 @@ function Header() {
                 />
                 <div>
                    <p className="text-blue-500">Logged in as:</p>
-                   <p className="font-bold text-lg">Guilherme Santos</p>
+                   <p className="font-bold text-lg">{session.user?.name}</p>
                 </div>
                   
             </div>
@@ -46,7 +48,7 @@ function Header() {
                 </div>
 
                 <Link 
-                    href={'/second'}
+                    href={'/auth/signin'}
                     className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
                 >
                     Sign In

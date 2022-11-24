@@ -22,7 +22,7 @@ const ChatInput = ({session}: Props) => {
         // look at the return in vscode and set it
         e.preventDefault();
 
-        if (!input) return;
+        if (!input || !session) return;
 
         const id = uuid();
 
@@ -34,9 +34,9 @@ const ChatInput = ({session}: Props) => {
             id: id,
             message: messageToSend,
             created_at: Date.now(),
-            username: 'bunny girl',
-            profilePic: 'https://pbs.twimg.com/media/FHLbQgnXMAMVbRn.jpg',
-            email: 'bunny.work@gmail.com'
+            username: session?.user?.name!,
+            profilePic: session?.user?.image!,
+            email: session?.user?.email!
         }
 
         const uploadMessageToUpstash = async () => {
