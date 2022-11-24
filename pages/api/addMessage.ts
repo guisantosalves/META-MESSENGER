@@ -34,7 +34,8 @@ export default async function handler(
     // pushing to upstash
     await redis.hset('messages', message.id, JSON.stringify(newMessage))
 
-    // using push
+    // using pusher
+    // chanel / event / object to insert
     serverPusher.trigger("messages", "new-message", newMessage)
 
     res.status(200).json({message: newMessage})

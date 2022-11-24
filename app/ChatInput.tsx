@@ -5,8 +5,13 @@ import { v4 as uuid } from 'uuid'
 import { Message } from '../typings'
 import useSWR from 'swr'
 import fetcher from '../utils/fetchMessages'
+import { unstable_getServerSession } from 'next-auth/next';
 
-const ChatInput = () => {
+type Props = {
+    session: Awaited<ReturnType<typeof unstable_getServerSession>>
+}
+
+const ChatInput = ({session}: Props) => {
     // always when we need to do something with state, it's basically a client component.
     const [input, setInput] = React.useState<string>("")
     
@@ -49,6 +54,7 @@ const ChatInput = () => {
             return [data.message, ...messages!] // getting from useSWR
         }
 
+        // basically making dispatch in data layer
         await mutate(uploadMessageToUpstash, {
             optimisticData: [message, ...messages!], // setting in cache of swr before the val before the call
             rollbackOnError: true,
@@ -65,6 +71,7 @@ const ChatInput = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 type={'text'}
+                disabled={!session}
                 placeholder={"Enter a Message here..."}
                 className="
                 flex-1 rounded border border-gray-300 focus:outline-none 

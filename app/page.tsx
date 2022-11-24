@@ -4,6 +4,8 @@ import * as React from 'react'
 import MessageList from './MessageList';
 import ChatInput from './ChatInput';
 import { Message } from '../typings';
+import { unstable_getServerSession } from 'next-auth/next';
+import { Providers } from './Providers'
 
 /*
     chat input -> faço o push da menssagem no banco e faço o set dela
@@ -20,16 +22,21 @@ async function HomePage() {
         return res.json()
     })
 
+    // getting the data in the server
     const messages: Message[] = data.messages;
 
-    return (
-        <main>
-            {/* message list */}
-            <MessageList initialMessages={messages}/>
+    const session = await unstable_getServerSession()
 
-            {/* chat input */}
-            <ChatInput />
-        </main>
+    return (
+        <Providers session={session}>
+            <main>
+                {/* message list */}
+                <MessageList initialMessages={messages} />
+
+                {/* chat input */}
+                <ChatInput session={session} />
+            </main>
+        </Providers>
     )
 }
 

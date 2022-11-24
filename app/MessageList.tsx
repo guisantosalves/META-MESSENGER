@@ -29,6 +29,7 @@ const MessageList = ({initialMessages}: Props) => {
         channel.bind('new-message', async (data: Message) => {
 
             // if you sent the message, no need to update cache of swr
+            // comparing store === data from pusher
             if (messages?.find((item) => item.id === data.id)) return;
 
             if (!messages) {
@@ -49,7 +50,7 @@ const MessageList = ({initialMessages}: Props) => {
     }, [messages, mutate, clientPusher])
     return (
         <div className="space-y-5 px-5 pt-8 pb-32 max-w-2xl xl:max-w-4xl mx-auto">
-            {(messages || inititalMessages).map((item, index) => (
+            {(messages || initialMessages).map((item, index) => (
                 <MessageComponent
                     key={index}
                     message={item}
