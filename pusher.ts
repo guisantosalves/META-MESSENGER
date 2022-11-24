@@ -9,8 +9,8 @@ import ClientPusher from "pusher-js"
 // pusher -> server
 export const serverPusher = new Pusher({
     appId: "1513213",
-    key: "12aeea28cbf24366feb1",
-    secret: "d95d722979b52e52c3d3",
+    key: process.env.PUSH_KEY!,
+    secret: process.env.PUSH_SECRET!,
     cluster: "us2",
     useTLS: true
 })
